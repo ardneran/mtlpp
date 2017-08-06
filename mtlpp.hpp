@@ -2689,6 +2689,81 @@ namespace mtlpp
 }
 
 //////////////////////////////////////
+// FILE: capture_scope.hpp
+//////////////////////////////////////
+/*
+ * Copyright 2016-2017 Nikolay Aleksiev. All rights reserved.
+ * License: https://github.com/naleksiev/mtlpp/blob/master/LICENSE
+ */
+
+// #pragma once
+
+// #include "defines.hpp"
+
+namespace mtlpp
+{
+    class CommandQueue;
+    class Device;
+
+    class CaptureScope : public ns::Object
+    {
+    public:
+        CaptureScope() { }
+        CaptureScope(const ns::Handle& handle) : ns::Object(handle) { }
+
+        CommandQueue    GetCommandQueue() const;
+        Device          GetDevice() const;
+        ns::String      GetLabel() const;
+
+        void BeginScope();
+        void EndScope();
+    }
+    MTLPP_AVAILABLE(10_13, 11_0);
+}
+
+//////////////////////////////////////
+// FILE: capture_manager.hpp
+//////////////////////////////////////
+/*
+ * Copyright 2016-2017 Nikolay Aleksiev. All rights reserved.
+ * License: https://github.com/naleksiev/mtlpp/blob/master/LICENSE
+ */
+
+// #pragma once
+
+// #include "defines.hpp"
+
+namespace mtlpp
+{
+    class CaptureScope;
+    class CommandQueue;
+    class Device;
+
+    class CaptureManager : public ns::Object
+    {
+    public:
+        CaptureManager() { }
+        CaptureManager(const ns::Handle& handle) : ns::Object(handle) { }
+
+        static CaptureManager GetSharedCaptureManager();
+
+        CaptureScope NewCaptureScope(Device device);
+        CaptureScope NewCaptureScope(CommandQueue commandQueue);
+
+        CaptureScope GetDefaultCaptureScope();
+        void SetDefaultCaptureScope(CaptureScope captureScope);
+
+        void StartCapture(Device device);
+        void StartCapture(CommandQueue commandQueue);
+        void StartCapture(CaptureScope CaptureScope);
+        void StopCapture();
+
+        bool IsCapturing();
+    }
+    MTLPP_AVAILABLE(10_13, 11_0);
+}
+
+//////////////////////////////////////
 // FILE: mtlpp.hpp
 //////////////////////////////////////
 /*
@@ -2718,4 +2793,6 @@ namespace mtlpp
 // #include "sampler.hpp"
 // #include "texture.hpp"
 // #include "heap.hpp"
+// #include "capture_scope.hpp"
+// #include "capture_manager.hpp"
 

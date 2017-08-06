@@ -25,3 +25,5 @@
 #include "sampler.hpp"
 #include "texture.hpp"
 #include "heap.hpp"
+#include "capture_scope.hpp"
+#include "capture_manager.hpp"
